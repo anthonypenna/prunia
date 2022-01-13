@@ -56,7 +56,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"post-merge": "prunify",
+			"post-merge": "prunia",
 			"pre-commit": "lint-staged",
 			"pre-push": "lint-staged && pnpm unit:coverage"
 		}
