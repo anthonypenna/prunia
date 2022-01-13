@@ -70,11 +70,6 @@ describe('getPrunableBranches', () => {
 			`)
 		})
 
-		it('should remove the temporary fetch output file', () => {
-			getPrunableBranches()
-			expect($).toHaveBeenCalledWith('rm .prunia')
-		})
-
 		it('should return an array of branch names', () => {
 			expect(getPrunableBranches()).toEqual(['branch-a', 'branch-b', 'branch-c'])
 		})

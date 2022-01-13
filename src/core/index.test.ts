@@ -1,5 +1,6 @@
 import * as console from '~/lib/console'
 import * as git from '~/lib/git'
+import * as lib from '~/lib/prunia'
 import { afterEach, beforeEach, describe, expect, it, JestMockCompat, vi } from 'vitest'
 import { prunia } from '~/core'
 
@@ -12,12 +13,14 @@ describe('prunia', () => {
 	let getPrunableBranches: JestMockCompat
 	let log: JestMockCompat
 	let warn: JestMockCompat
+	let setupPrunia: JestMockCompat
 
 	beforeEach(() => {
 		deleteBranch = vi.spyOn(git, 'deleteBranch')
 		getPrunableBranches = vi.spyOn(git, 'getPrunableBranches')
 		log = vi.spyOn(console, 'log').mockImplementation(() => undefined)
 		warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+		setupPrunia = vi.spyOn(lib, 'setupPrunia')
 	})
 
 	afterEach(() => {
@@ -40,9 +43,9 @@ describe('prunia', () => {
 			vi.spyOn(git, 'isGitRepository').mockReturnValue(true)
 		})
 
-		it('should get the list of prunable branches', () => {
+		it('should setup a new prunia directory', () => {
 			prunia()
-			expect(getPrunableBranches).toHaveBeenCalled()
+			expect(setupPrunia).toHaveBeenCalled()
 		})
 
 		describe('when there are no branches to prune', () => {
