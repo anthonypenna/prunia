@@ -1,13 +1,13 @@
 import { getDirectoryContents } from '~/lib/fs'
 import { $ } from '~/lib/shell'
 
-export const isGitRepository = (): boolean => {
+export const isGitRepository = () => {
 	const directoryContents = getDirectoryContents()
 	return directoryContents.includes('.git')
 }
 
-export const getPrunableBranches = (): string[] => {
-	const pruneOutput = $('git fetch --prune --progress &> .prunia && cat .prunia')
+export const getPrunableBranches = () => {
+	const pruneOutput = $('git fetch --prune --progress &> .prunia/output && cat .prunia/output')
 
 	if (!pruneOutput) {
 		return []
@@ -15,20 +15,14 @@ export const getPrunableBranches = (): string[] => {
 
 	const branchNames = pruneOutput
 		.split('\n')
-		.filter(line => line.includes('[deleted]'))
-		.map(line => line.split('->'))
+		.filter(outputLine => outputLine.includes('[deleted]'))
+		.map(outputLine => outputLine.split('->'))
 		.map(([_, branchName]) => branchName.replace('origin/', ''))
+		.map(branchName => branchName.trim())
 
-	if (branchNames.length === 0) {
-		return []
-	}
-
-	$('rm .prunia')
-
-	const branchNamesWithoutForwardSlash = branchNames.map(branchName => branchName.slice(1))
-	return branchNamesWithoutForwardSlash
+	return branchNames
 }
 
-export const deleteBranch = (branchName: string): void => {
+export const deleteBranch = (branchName: string) => {
 	$(`git branch -D ${branchName}`)
 }

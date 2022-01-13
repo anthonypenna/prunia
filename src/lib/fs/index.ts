@@ -1,5 +1,5 @@
 import { readdirSync } from 'fs'
 
-export const getDirectoryContents = (): string[] => {
+export const getDirectoryContents = () => {
 	return readdirSync('./', { encoding: 'utf-8' })
 }
