@@ -17,10 +17,10 @@ export const prunia = () => {
 		return
 	}
 
-	prunableBranches.forEach(branch => {
+	for (const branch of prunableBranches) {
 		deleteBranch(branch)
 		log(`Pruned branch "${branch}".`)
-	})
+	}
 
 	log('Done.')
 }
